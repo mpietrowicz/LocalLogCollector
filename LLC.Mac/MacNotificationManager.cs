@@ -1,7 +1,9 @@
+using System;
+using System.Threading.Tasks;
 using DesktopNotifications;
-using DesktopNotifications.FreeDesktop;
+using Foundation;
 
-namespace LLC.Infrastructure;
+namespace LLC.Mac;
 
 
 public class MacNotificationManager : INotificationManager, IDisposable
@@ -15,23 +17,31 @@ public class MacNotificationManager : INotificationManager, IDisposable
 
     public Task Initialize()
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 
-    public Task ShowNotification(Notification notification, DateTimeOffset? expirationTime = null)
+    public Task ShowNotification(Notification not, DateTimeOffset? expirationTime = null)
     {
-        throw new NotImplementedException();
+        var notification = new NSUserNotification();
+
+// Add text and sound to the notification
+        notification.Title = not.Title;
+        notification.InformativeText = not.Body;
+        notification.SoundName = NSUserNotification.NSUserNotificationDefaultSoundName;
+        notification.HasActionButton = false;
+        NSUserNotificationCenter.DefaultUserNotificationCenter.DeliverNotification(notification);
+        return Task.CompletedTask;
     }
 
     public Task HideNotification(Notification notification)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 
     public Task ScheduleNotification(Notification notification, DateTimeOffset deliveryTime,
         DateTimeOffset? expirationTime = null)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 
     public string? LaunchActionId { get; }

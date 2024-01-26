@@ -6,6 +6,7 @@ using DesktopNotifications.FreeDesktop;
 using DesktopNotifications.Windows;
 using System;
 using DesktopNotifications;
+using Splat;
 
 namespace LLC.Infrastructure;
 
@@ -14,14 +15,34 @@ namespace LLC.Infrastructure;
 /// </summary>
 public static class AppBuilderExtensions
 {
+    
+    
+    public static AppBuilder SetupDesktopNotificationsCustom(this AppBuilder builder, INotificationManager manager)
+    {
+        if (builder == null) throw new ArgumentNullException(nameof(builder));
+        if (manager == null) throw new ArgumentNullException(nameof(manager));
+        manager.Initialize().GetAwaiter().GetResult();
+
+        var manager_ = manager;
+        builder.AfterSetup(b =>
+        {
+            if (b.Instance?.ApplicationLifetime is IControlledApplicationLifetime lifetime)
+            {
+                lifetime.Exit += (s, e) => { manager_.Dispose(); };
+            }
+        });
+        Locator.CurrentMutable.RegisterConstant(manager, typeof(INotificationManager));
+        return builder;
+    }
     /// <summary>
     /// Setups the <see cref="INotificationManager" /> for the current platform and
     /// binds it to the service locator (<see cref="AvaloniaLocator" />).
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
-    public static AppBuilder SetupDesktopNotifications(this AppBuilder builder, out INotificationManager? manager)
+    public static AppBuilder SetupDesktopNotifications(this AppBuilder builder)
     {
+        INotificationManager? manager;
         if (Environment.OSVersion.Platform == PlatformID.Win32NT)
         {
             var context = WindowsApplicationContext.FromCurrentProcess();
@@ -34,9 +55,7 @@ public static class AppBuilderExtensions
         }
         else
         {
-            //TODO: OSX once implemented/stable
-            manager = null;
-            return builder;
+            throw new Exception($"Unsupported platform {Environment.OSVersion.Platform.ToString()}");
         }
 
         //TODO Any better way of doing this?
@@ -50,6 +69,7 @@ public static class AppBuilderExtensions
                 lifetime.Exit += (s, e) => { manager_.Dispose(); };
             }
         });
-
+        Locator.CurrentMutable.RegisterConstant(manager, typeof(INotificationManager));
         return builder;
     }
+}

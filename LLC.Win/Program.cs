@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
+using LLC.Infrastructure;
 
 namespace LLC.Win;
 
@@ -17,6 +18,7 @@ sealed class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .SetupDesktopNotifications()
             .WithInterFont()
             .LogToTrace()
             .UseReactiveUI();
