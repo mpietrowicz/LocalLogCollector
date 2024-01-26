@@ -1,13 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-    
+        <OutputType>Exe</OutputType>
         <!--If you are willing to use Windows/MacOS native APIs you will need to create 3 projects.
         One for Windows with net8.0-windows TFM, one for MacOS with net8.0-macos and one with net8.0 TFM for Linux.-->
         <TargetFramework>net8.0-macos</TargetFramework>
+        <RuntimeIdentifiers>osx-x64;osx-arm64</RuntimeIdentifiers>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <UseAppHost>true</UseAppHost>
+        <GenerateProgramFile>false</GenerateProgramFile>
+        <ApplicationId>LLC.Mac</ApplicationId>
     </PropertyGroup>
-    
+    <PropertyGroup>
+        <CFBundleName>LLC.Mac</CFBundleName> <!-- Also defines .app file name -->
+        <CFBundleDisplayName>LocalLogCollector</CFBundleDisplayName>
+        <CFBundleIdentifier>LLC.Mac</CFBundleIdentifier>
+        <CFBundleVersion>1.0.0</CFBundleVersion>
+        <CFBundlePackageType>APPL</CFBundlePackageType>
+        <CFBundleSignature>????</CFBundleSignature>
+        <CFBundleExecutable>LLC.Mac</CFBundleExecutable>
+        <CFBundleIconFile>LLC.Mac.icns</CFBundleIconFile> <!-- Will be copied from output directory -->
+        <NSPrincipalClass>NSApplication</NSPrincipalClass>
+        <NSHighResolutionCapable>true</NSHighResolutionCapable>
+    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)"/>
@@ -16,6 +31,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LLC.App\LLC.App.csproj" />
+        <ProjectReference Include="..\LLC\LLC.csproj"/>
     </ItemGroup>
 </Project>

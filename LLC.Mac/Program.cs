@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using LLC.App;
+
 namespace LLC.Mac;
 
 sealed class Program
@@ -15,7 +15,7 @@ sealed class Program
 
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App.App>()
+        => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
             .LogToTrace()
