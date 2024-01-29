@@ -3,4 +3,9 @@
     <Nullable>enable</Nullable>
     <AvaloniaVersion>11.0.7</AvaloniaVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Splat" Version="14.8.12" />
+  </ItemGroup>
+
 </Project>
+

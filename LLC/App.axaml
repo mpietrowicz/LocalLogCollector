@@ -2,14 +2,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="LLC.App"
              xmlns:local="using:LLC"
+             xmlns:viewModels="clr-namespace:LLC.ViewModels;assembly=LLC.ViewModels"
+             xmlns:models="clr-namespace:LLC.Models;assembly=LLC.Models"
+             x:CompileBindings="True"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
-        <local:ViewLocator/>
+        <local:ViewLocator />
     </Application.DataTemplates>
-  
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <viewModels:AppViewModel />
+    </Design.DataContext>
+
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme x:DataType="viewModels:AppViewModel">
+            <FluentTheme.Palettes>
+                <!-- Palette for Light theme variant -->
+                <ColorPaletteResources x:Key="Light" Accent="Green" RegionColor="White" ErrorText="Red" />
+                <!-- Palette for Dark theme variant -->
+                <ColorPaletteResources  x:Key="Dark" Accent="DarkGreen" RegionColor="Black" ErrorText="Yellow" />
+
+            </FluentTheme.Palettes>
+        </FluentTheme>
     </Application.Styles>
 </Application>

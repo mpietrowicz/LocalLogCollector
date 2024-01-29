@@ -15,6 +15,23 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,*">
+        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
+            <MenuItem Header="_File"></MenuItem>
+            <MenuItem Header="_Settings">
+                <MenuItem IsVisible="{Binding ThemeConfig.IsDarkMode, FallbackValue=False}" Header="_Dark Mode">
+                    
+                </MenuItem>
+                <MenuItem IsVisible="{Binding !ThemeConfig.IsDarkMode, FallbackValue=False}" Header="_Light Mode">
+                    
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <TreeView Grid.Column="0" Grid.Row="1">
+            <TreeViewItem Header="Root">
+                <TreeViewItem Header="1"></TreeViewItem>
+            </TreeViewItem>
+        </TreeView>
+    </Grid>
 
 </Window>

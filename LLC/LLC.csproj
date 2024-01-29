@@ -19,10 +19,13 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
 
         <PackageReference Include="DesktopNotifications.Avalonia" Version="1.3.1" />
+
+      
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\LLC.Assets\LLC.Assets.csproj" />
+      <ProjectReference Include="..\LLC.Infrastructure\LLC.Infrastructure.csproj" />
       <ProjectReference Include="..\LLC.ViewModels\LLC.ViewModels.csproj" />
       <ProjectReference Include="..\LLC.Views\LLC.Views.csproj" />
     </ItemGroup>

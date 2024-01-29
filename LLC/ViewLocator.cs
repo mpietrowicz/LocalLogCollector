@@ -2,7 +2,6 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using LLC.Abstraction.AbstractClasses;
-using LLC.ViewModels;
 
 namespace LLC;
 

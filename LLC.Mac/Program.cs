@@ -1,8 +1,6 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using DesktopNotifications;
-using Foundation;
 using LLC.Infrastructure;
 
 namespace LLC.Mac;

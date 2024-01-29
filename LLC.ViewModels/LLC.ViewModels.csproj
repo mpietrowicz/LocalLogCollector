@@ -16,11 +16,15 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
 
         <PackageReference Include="DesktopNotifications.Avalonia" Version="1.3.1" />
+        <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+        
     </ItemGroup>
+    
     
 
     <ItemGroup>
       <ProjectReference Include="..\LLC.Abstraction\LLC.Abstraction.csproj" />
+      <ProjectReference Include="..\LLC.Models\LLC.Models.csproj" />
     </ItemGroup>
 
 </Project>
