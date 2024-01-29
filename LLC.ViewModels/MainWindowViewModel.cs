@@ -1,4 +1,6 @@
-﻿namespace LLC.ViewModels;
+﻿using LLC.Abstraction.AbstractClasses;
+
+namespace LLC.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
