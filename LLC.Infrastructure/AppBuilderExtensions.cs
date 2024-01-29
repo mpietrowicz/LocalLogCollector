@@ -42,6 +42,13 @@ public static class AppBuilderExtensions
     /// <returns></returns>
     public static AppBuilder SetupDesktopNotifications(this AppBuilder builder)
     {
+        if (Design.IsDesignMode)
+        {
+            Locator.CurrentMutable.RegisterConstant(new FakeNotificationManager(), typeof(INotificationManager));
+            return builder;
+        }
+     
+        
         INotificationManager? manager;
         if (Environment.OSVersion.Platform == PlatformID.Win32NT)
         {
