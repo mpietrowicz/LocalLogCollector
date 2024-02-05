@@ -28,5 +28,9 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
     private void HandleActivation(CompositeDisposable obj)
     {
+        this.BindCommand(ViewModel, x => x.ChangeTheme, x => x.ChangeThemeButton)
+            .DisposeWith(obj);
+        this.OneWayBind(ViewModel, x => x.ThemeText, x => x.ChangeThemeButton.Header)
+            .DisposeWith(obj);
     }
 }

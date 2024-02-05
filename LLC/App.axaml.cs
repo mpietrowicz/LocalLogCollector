@@ -13,10 +13,16 @@ using ReactiveUI;
 
 namespace LLC;
 
-public partial class App : AppBase
+public partial class App : AppBase, IViewFor<AppViewModel>
 {
-    public AppViewModel ViewModel { get; set; }
+ 
+    object? IViewFor.ViewModel
+    {
+        get => ViewModel;
+        set => ViewModel = value as AppViewModel;
+    }
 
+    public AppViewModel? ViewModel { get; set; }
     public override void Initialize()
     {
         RegisterSingleton(() => new FluentThemeConfig(), typeof(FluentThemeConfig));
@@ -29,9 +35,11 @@ public partial class App : AppBase
         
         ViewModel = Locator.Current.GetService<AppViewModel>() ?? throw new ArgumentNullException(nameof(AppViewModel));
         DataContext = ViewModel;
-        this.WhenAnyValue(x=> x.ViewModel.ThemeConfig).Subscribe(x =>
+        this.WhenAnyValue(x=> x.ViewModel.ThemeConfig, x=>x.ViewModel.ThemeConfig.IsDarkMode).Subscribe(x =>
         {
-            if (x is not null)
+            var config = x.Item1;
+            var isDarkMode = x.Item2;
+            if (config is not null)
             {
                 var s = Styles.FirstOrDefault(xs=> xs is FluentTheme);
                 if (s != null) Styles.Remove(s);
@@ -41,20 +49,20 @@ public partial class App : AppBase
                     {
                         [ThemeVariant.Light] = new ColorPaletteResources()
                         {
-                             Accent = x.Light.AccentColor,
-                             RegionColor = x.Light.RegionColor,
-                             ErrorText = x.Light.ErrorColor
+                             Accent = config.Light.AccentColor,
+                             RegionColor = config.Light.RegionColor,
+                             ErrorText = config.Light.ErrorColor
                         },
                         [ThemeVariant.Dark] = new ColorPaletteResources()
                         {
-                            Accent = x.Dark.AccentColor,
-                            RegionColor = x.Dark.RegionColor,
-                            ErrorText = x.Dark.ErrorColor
+                            Accent = config.Dark.AccentColor,
+                            RegionColor = config.Dark.RegionColor,
+                            ErrorText = config.Dark.ErrorColor
                         },
                     }
                 };
                 Styles.Add(theme);
-                RequestedThemeVariant = ViewModel.ThemeConfig.IsDarkMode ? ThemeVariant.Dark : ThemeVariant.Light;
+                RequestedThemeVariant = isDarkMode ? ThemeVariant.Dark : ThemeVariant.Light;
             }
         });
      
@@ -74,4 +82,6 @@ public partial class App : AppBase
 
         base.OnFrameworkInitializationCompleted();
     }
+
+   
 }

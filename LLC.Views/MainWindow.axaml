@@ -19,10 +19,7 @@
         <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
             <MenuItem Header="_File"></MenuItem>
             <MenuItem Header="_Settings">
-                <MenuItem IsVisible="{Binding ThemeConfig.IsDarkMode, FallbackValue=False}" Header="_Dark Mode">
-                    
-                </MenuItem>
-                <MenuItem IsVisible="{Binding !ThemeConfig.IsDarkMode, FallbackValue=False}" Header="_Light Mode">
+                <MenuItem Name="ChangeThemeButton" >
                     
                 </MenuItem>
             </MenuItem>
