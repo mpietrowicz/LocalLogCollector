@@ -25,11 +25,15 @@ public partial class App : AppBase, IViewFor<AppViewModel>
     public AppViewModel? ViewModel { get; set; }
     public override void Initialize()
     {
+        Locator.CurrentMutable.RegisterLazySingleton(() => new ConventionalViewLocator(), typeof(IViewLocator));
         RegisterSingleton(() => new FluentThemeConfig(), typeof(FluentThemeConfig));
         RegisterSingleton(() => new AppViewModel()
         {
             ThemeConfig = Locator.Current.GetService<FluentThemeConfig>()
         }, typeof(AppViewModel));
+        RegisterSingleton(() => new MainWindow(), typeof(MainWindow));
+        RegisterSingleton(() => new MainWindowViewModel(), typeof(MainWindowViewModel));
+
         ScanAssemblies();
         AvaloniaXamlLoader.Load(this);
         
@@ -75,10 +79,9 @@ public partial class App : AppBase, IViewFor<AppViewModel>
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
+            var window = Locator.Current.GetService<MainWindow>() ?? throw new ArgumentNullException(nameof(MainWindow));
+            window.DataContext = Locator.Current.GetService<MainWindowViewModel>();
+            desktop.MainWindow = window;
         }
 
         base.OnFrameworkInitializationCompleted();
