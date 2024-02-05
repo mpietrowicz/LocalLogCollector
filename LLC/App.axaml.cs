@@ -35,6 +35,7 @@ public partial class App : AppBase, IViewFor<AppViewModel>
         
         ViewModel = Locator.Current.GetService<AppViewModel>() ?? throw new ArgumentNullException(nameof(AppViewModel));
         DataContext = ViewModel;
+        // set the theme
         this.WhenAnyValue(x=> x.ViewModel.ThemeConfig, x=>x.ViewModel.ThemeConfig.IsDarkMode).Subscribe(x =>
         {
             var config = x.Item1;
