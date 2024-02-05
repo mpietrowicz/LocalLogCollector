@@ -16,10 +16,10 @@
     </Design.DataContext>
 
     <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,*">
-        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
-            <MenuItem Header="_File"></MenuItem>
-            <MenuItem Header="_Settings">
-                <MenuItem Name="ChangeThemeButton" >
+        <Menu Name="MainMenu" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
+            <MenuItem Name="FileMenu" Header="_File"></MenuItem>
+            <MenuItem Name="SettingsMenu" Header="_Settings">
+                <MenuItem Name="SettingsChangeThemeButton" >
                     
                 </MenuItem>
             </MenuItem>
