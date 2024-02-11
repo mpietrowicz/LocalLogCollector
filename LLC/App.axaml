@@ -27,5 +27,6 @@
 
             </FluentTheme.Palettes>
         </FluentTheme>
+        <StyleInclude Source="avares://LLC.Styles/MainStyles.axaml" />
     </Application.Styles>
 </Application>

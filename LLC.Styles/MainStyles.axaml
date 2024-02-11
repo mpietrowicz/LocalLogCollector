@@ -1,0 +1,22 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <StackPanel>
+            <Menu>
+                <MenuItem Header="_File"></MenuItem>
+                <MenuItem Header="_Edit"></MenuItem>
+                <MenuItem Header="_View"></MenuItem>
+            </Menu>
+            <TreeView>
+                <TreeViewItem Header="Root" IsExpanded="True">
+                    <TreeViewItem Header="Item 1"></TreeViewItem>
+                    <TreeViewItem Header="Item 2"></TreeViewItem>
+                    <TreeViewItem Header="Item 3"></TreeViewItem>
+                </TreeViewItem>
+            </TreeView>
+        </StackPanel>
+        
+    </Design.PreviewWith>
+
+    <!-- Add Styles Here -->
+</Styles>
