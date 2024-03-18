@@ -1,5 +1,6 @@
 using Avalonia.Headless;
 using Avalonia.Headless.NUnit;
+using FluentAssertions;
 using LLC.Headless.Tests.Extensions;
 using LLC.Headless.Tests.TestsInfrastructure;
 using LLC.ViewModels;
@@ -22,23 +23,23 @@ public class MainWindowTests
         session.HeadlessSessionStart((window, viewModel) =>
         {
             var frame = window.CaptureRenderedFrame();
-            Assert.NotNull(frame);
+            frame.Should().NotBeNull();
             frame.Save("file.png");
             // open menu and click on settings and change theme
-            Assert.True(window.ClickObject(window.SettingsMenu));
+            window.ClickObject(window.SettingsMenu).Should().BeTrue();
             window.CaptureRenderedFrameAndSave<MainWindow>( $"{this.GetType().Name}/Theme_ChangeTheme_Success/ClickSettingsMenu.png");
             var header = window.SettingsChangeThemeButton.Header as string;
-            Assert.NotNull(header);
-            Assert.True(window.ClickObject(window.SettingsChangeThemeButton));
+            header.Should().NotBeNull();
+            window.ClickObject(window.SettingsChangeThemeButton).Should().BeTrue();
             
             // open settings menu to chek if name is changed 
-            Assert.True(window.ClickObject(window.SettingsMenu));
+            window.ClickObject(window.SettingsMenu).Should().BeTrue();
             window.CaptureRenderedFrameAndSave<MainWindow>( $"{this.GetType().Name}/Theme_ChangeTheme_Success/ClickSettingsMenu2.png");
 
             Assert.That(window.SettingsChangeThemeButton.Header, Is.Not.EqualTo(header));
 
-            Assert.NotNull(window);
-            Assert.NotNull(viewModel);
+            window.Should().NotBeNull();
+            viewModel.Should().NotBeNull();
         });
     }
 }

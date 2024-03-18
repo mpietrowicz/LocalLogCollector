@@ -18,7 +18,7 @@ sealed class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .SetupDesktopNotifications()
+            .SetupDesktopNotificationsCustom(new WinNotificationManager())
             .WithInterFont()
             .LogToTrace()
             .UseReactiveUI();
