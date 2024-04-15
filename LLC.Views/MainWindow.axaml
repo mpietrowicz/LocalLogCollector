@@ -15,7 +15,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,*">
+    <Grid ColumnDefinitions="*,4*" RowDefinitions="Auto,*">
         <Menu Name="MainMenu" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
             <MenuItem Name="FileMenu" Header="_File"></MenuItem>
             <MenuItem Name="SettingsMenu" Header="_Settings">

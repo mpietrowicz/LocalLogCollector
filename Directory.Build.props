@@ -1,7 +1,8 @@
 <Project>
   <PropertyGroup>
     <Nullable>enable</Nullable>
-    <AvaloniaVersion>11.0.7</AvaloniaVersion>
+    <AvaloniaVersion>11.0.10</AvaloniaVersion>
+    <NetVersion>net8.0</NetVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Splat" Version="14.8.12" />
