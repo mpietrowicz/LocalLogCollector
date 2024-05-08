@@ -6,6 +6,7 @@ namespace LLC.Infrastructure;
 
 public abstract class AppBase : Application
 {
+  
     public void Register(Func<object?> factory, Type? serviceType, string? contract = null)
     {
         Locator.CurrentMutable.Register(factory, serviceType, contract);

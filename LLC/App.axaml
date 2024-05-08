@@ -4,6 +4,7 @@
              xmlns:local="using:LLC"
              xmlns:viewModels="clr-namespace:LLC.ViewModels;assembly=LLC.ViewModels"
              xmlns:models="clr-namespace:LLC.Models;assembly=LLC.Models"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              x:CompileBindings="True"
              RequestedThemeVariant="Default">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
@@ -28,5 +29,6 @@
             </FluentTheme.Palettes>
         </FluentTheme>
         <StyleInclude Source="avares://LLC.Styles/MainStyles.axaml" />
+        <materialIcons:MaterialIconStyles />
     </Application.Styles>
 </Application>

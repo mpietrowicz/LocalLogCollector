@@ -2,6 +2,7 @@
 using System.Reactive.Disposables;
 using LLC.Abstraction.AbstractClasses;
 using LLC.Models;
+using Material.Icons;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -18,6 +19,9 @@ public class MainWindowViewModel : ViewModelBase, IActivatableViewModel
     public ViewModelActivator Activator { get; } = new();
     [Reactive]
     public string ThemeText { get; set; } = String.Empty;
+
+    [Reactive] public MaterialIconKind ThemeIco { get; set; } = MaterialIconKind.MoonWaningCrescent;
+    
     public MainWindowViewModel()
     {
         this.WhenActivated(HandleActivation);
@@ -34,6 +38,7 @@ public class MainWindowViewModel : ViewModelBase, IActivatableViewModel
         }).DisposeWith(obj);
         ChangeTheme.Subscribe(_ =>
         {
+            ThemeIco = ThemeConfig.IsDarkMode ? MaterialIconKind.MoonWaningCrescent : MaterialIconKind.WhiteBalanceSunny;
             ThemeText = ThemeConfig.IsDarkMode ?  "Switch to Light Mode" : "Switch to Dark Mode";
         }).DisposeWith(obj);
     }

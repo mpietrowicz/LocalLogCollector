@@ -3,6 +3,7 @@
         xmlns:vm="using:LLC.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="LLC.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -12,15 +13,31 @@
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="*,4*" RowDefinitions="Auto,*">
+    <Grid ColumnDefinitions="*,4*" RowDefinitions="Auto,*" ShowGridLines="True">
         <Menu Name="MainMenu" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
-            <MenuItem Name="FileMenu" Header="_File"></MenuItem>
-            <MenuItem Name="SettingsMenu" Header="_Settings">
-                <MenuItem Name="SettingsChangeThemeButton" >
-                    
+            <MenuItem Name="FileMenu" Header="_File">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Settings" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem  Name="SettingsMenu" Header="_Settings">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Settings" />
+                </MenuItem.Icon>
+                <MenuItem Name="SettingsChangeThemeButton">
+                    <MenuItem.Icon>
+                        <avalonia:MaterialIcon Kind="{Binding ThemeIco}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Add Connector">
+                    <MenuItem.Icon>
+                        <avalonia:MaterialIcon Kind="Connection" />
+                    </MenuItem.Icon>
+                    <MenuItem Header="_Udp" />
+                    <MenuItem Header="_Tcp" />
                 </MenuItem>
             </MenuItem>
         </Menu>
