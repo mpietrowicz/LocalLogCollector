@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using AppKit;
 using Avalonia;
 using Avalonia.ReactiveUI;
 using LLC.Infrastructure;
@@ -12,6 +14,7 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        NSApplication.Init();
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }
@@ -23,5 +26,9 @@ sealed class Program
             .WithInterFont()
             .LogToTrace()
             .SetupDesktopNotificationsCustom(new MacNotificationManager())
-            .UseReactiveUI();
+            .UseReactiveUI()
+    .UseReactiveUI().With(new AvaloniaNativePlatformOptions()
+    {
+        AvaloniaNativeLibraryPath = "libAvaloniaNative.dylib"
+    });
 }

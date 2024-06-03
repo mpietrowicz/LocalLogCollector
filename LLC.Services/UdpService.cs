@@ -42,9 +42,9 @@ public class UdpService : IService
             while (IsRunning == true)
             {
                 byte[] bytes = listener.Receive(ref groupEP);
-                var response = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
-                Debug.WriteLine(response);
-                var serialized = SerializerLog4J.Deserialize(new StringReader(response));
+                //var response = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+                //Debug.WriteLine(response);
+              //  var serialized = SerializerLog4J.Deserialize(new StringReader(response));
             }
         }
         catch (SocketException e)

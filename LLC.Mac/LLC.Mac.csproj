@@ -10,29 +10,39 @@
         <UseAppHost>true</UseAppHost>
         <GenerateProgramFile>false</GenerateProgramFile>
         <ApplicationId>LLC.Mac</ApplicationId>
+        <SupportedOSPlatformVersion>10.15</SupportedOSPlatformVersion>
     </PropertyGroup>
-    <PropertyGroup>
-        <CFBundleName>LLC.Mac</CFBundleName> <!-- Also defines .app file name -->
-        <CFBundleDisplayName>LocalLogCollector</CFBundleDisplayName>
-        <CFBundleIdentifier>LLC.Mac</CFBundleIdentifier>
-        <CFBundleVersion>1.0.0</CFBundleVersion>
-        <CFBundlePackageType>APPL</CFBundlePackageType>
-        <CFBundleSignature>????</CFBundleSignature>
-        <CFBundleExecutable>LLC.Mac</CFBundleExecutable>
-        <CFBundleIconFile>LLC.Mac.icns</CFBundleIconFile> <!-- Will be copied from output directory -->
-        <NSPrincipalClass>NSApplication</NSPrincipalClass>
-        <NSHighResolutionCapable>true</NSHighResolutionCapable>
-    </PropertyGroup>
+<!--    <PropertyGroup>-->
+<!--        <CFBundleName>LLC.Mac</CFBundleName> &lt;!&ndash; Also defines .app file name &ndash;&gt;-->
+<!--        <CFBundleDisplayName>LocalLogCollector</CFBundleDisplayName>-->
+<!--        <CFBundleIdentifier>LLC.Mac</CFBundleIdentifier>-->
+<!--        <CFBundleVersion>1.0.0</CFBundleVersion>-->
+<!--        <CFBundlePackageType>APPL</CFBundlePackageType>-->
+<!--        <CFBundleSignature>????</CFBundleSignature>-->
+<!--        <CFBundleExecutable>LLC.Mac</CFBundleExecutable>-->
+<!--        <CFBundleIconFile>LLC.Mac.icns</CFBundleIconFile> &lt;!&ndash; Will be copied from output directory &ndash;&gt;-->
+<!--        <NSPrincipalClass>NSApplication</NSPrincipalClass>-->
+<!--        <NSHighResolutionCapable>true</NSHighResolutionCapable>-->
+<!--    </PropertyGroup>-->
 
     <ItemGroup>
         <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="Avalonia.Native" Version="11.0.10" />
         <PackageReference Include="DesktopNotifications.Avalonia" Version="1.3.1" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\LLC.Infrastructure\LLC.Infrastructure.csproj" />
         <ProjectReference Include="..\LLC\LLC.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assets.xcassets\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ImageAsset Remove="Assets.xcassets\AppIcon.appiconset\Icon1024.png" />
     </ItemGroup>
 </Project>

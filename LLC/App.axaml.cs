@@ -6,6 +6,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
+using DesktopNotifications;
 using LLC.Abstraction;
 using LLC.Infrastructure;
 using LLC.Models;
@@ -19,6 +20,7 @@ namespace LLC;
 
 public partial class App : AppBase, IViewFor<AppViewModel>
 {
+
     private List<Task> ServicesTasks { get; set; } = new();
     private List<IService> Services { get; set; } = new();
 
@@ -46,6 +48,9 @@ public partial class App : AppBase, IViewFor<AppViewModel>
 
         ViewModel = Locator.Current.GetService<AppViewModel>() ?? throw new ArgumentNullException(nameof(AppViewModel));
         DataContext = ViewModel;
+        
+       
+        
         // set the theme
         this.WhenAnyValue(x => x.ViewModel.ThemeConfig, x => x.ViewModel.ThemeConfig.IsDarkMode).Subscribe(x =>
         {
@@ -75,6 +80,7 @@ public partial class App : AppBase, IViewFor<AppViewModel>
                 };
                 Styles.Add(theme);
                 RequestedThemeVariant = isDarkMode ? ThemeVariant.Dark : ThemeVariant.Light;
+              
             }
         });
     }
