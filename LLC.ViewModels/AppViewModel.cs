@@ -12,9 +12,6 @@ public class AppViewModel : ViewModelBase
 {
     [Reactive]
     public FluentThemeConfig? ThemeConfig { get; set; } = Locator.Current.GetService<FluentThemeConfig>();
- 
-
-    
     public AppViewModel()
     {
     
