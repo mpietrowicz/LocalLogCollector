@@ -13,10 +13,6 @@ public class MainMainNotifications : IMainNotifications
     private static DesktopNotifications.INotificationManager SystemManager => _systemManager ??=
         Locator.Current.GetService<DesktopNotifications.INotificationManager>();
 
-    public MainMainNotifications()
-    {
-    }
-
 
     public void Show(string title, string messge)
     {

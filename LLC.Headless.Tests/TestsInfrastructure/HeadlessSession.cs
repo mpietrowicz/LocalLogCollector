@@ -19,7 +19,10 @@ public class HeadlessSession : IDisposable
                 ViewModel = _viewModel
             };
             _window.Show();
-            _window.Activate();
+            if (!_window.IsActive)
+            {
+                _window.Activate();
+            }
             Dispatcher.UIThread.RunJobs();
             run(_window, _viewModel);
         }
