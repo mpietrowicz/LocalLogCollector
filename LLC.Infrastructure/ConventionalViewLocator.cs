@@ -1,8 +1,7 @@
-using System;
 using ReactiveUI;
 using Splat;
 
-namespace LLC;
+namespace LLC.Infrastructure;
 
 public class ConventionalViewLocator : IViewLocator
 {

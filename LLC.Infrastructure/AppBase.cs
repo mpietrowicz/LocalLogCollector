@@ -1,6 +1,10 @@
 using System.Reflection;
 using Avalonia;
 using LLC.Abstraction;
+using LLC.Abstraction.Iterfaces;
+using LLC.Models;
+using LLC.ViewModels;
+using LLC.Views;
 using ReactiveUI;
 using Splat;
 
@@ -18,13 +22,28 @@ public abstract class AppBase : Application
         Locator.CurrentMutable.RegisterLazySingleton(factory, serviceType, contract);
     }
 
-    protected void ScanAssemblies()
+    public void RegisterContainer()
+    {
+        Locator.CurrentMutable.RegisterLazySingleton(() => new MainMainNotifications(), typeof(IMainNotifications));
+        Locator.CurrentMutable.RegisterLazySingleton(() => new ConventionalViewLocator(), typeof(IViewLocator));
+        RegisterSingleton(() => new FluentThemeConfig(), typeof(FluentThemeConfig));
+        RegisterSingleton(() => new AppViewModel()
+        {
+            ThemeConfig = Locator.Current.GetService<FluentThemeConfig>()
+        }, typeof(AppViewModel));
+        RegisterSingleton(() => new MainWindow(), typeof(MainWindow));
+        RegisterSingleton(() => new MainWindowViewModel(), typeof(MainWindowViewModel));
+        ScanAssemblies();
+        //  Notifications
+    }
+
+    private void ScanAssemblies()
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies()
             .Where(x => !string.IsNullOrEmpty(x.FullName) && x.FullName.StartsWith("LLC."));
         List<Task> servicesTasks = new();
         servicesTasks.Add(RegisterViewsForViewModels(assemblies));
-        
+
         foreach (var assembly in assemblies)
         {
             var services = assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IService)));
@@ -33,7 +52,7 @@ public abstract class AppBase : Application
                 RegisterSingleton(() => Activator.CreateInstance(service), service);
             }
         }
-        
+
         Task.WaitAll(servicesTasks.ToArray());
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.JavaScript;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AppKit;
@@ -10,11 +11,10 @@ using UserNotifications;
 
 namespace LLC.Mac;
 
-
-public class LinkedUNNotificationRequest  : IDisposable
+public class LinkedUNNotificationRequest : IDisposable
 {
     private UNNotificationRequest? Request { get; set; }
-    private string Id { get;  }
+    private string Id { get; }
     private Notification? Notification { get; set; }
 
     public LinkedUNNotificationRequest(UNNotificationRequest request, string id, Notification notification)
@@ -28,63 +28,86 @@ public class LinkedUNNotificationRequest  : IDisposable
     {
         Request?.Dispose();
         Notification = null;
-        
     }
 }
 
 public class MacNotificationManager : INotificationManager
 {
-    private UNUserNotificationCenter? _notificationCenter;
+    private UNUserNotificationCenter? NotificationCenter { get; set; }
+    private UNNotificationSettings Ustawienia { get; set; }
 
-    // private Dictionary<string, UNNotificationRequest> NotificationsNative { get; set; }
-    
+    private bool? _canShowNotification;
 
-    // public void Dispose()
-    // {
-    //     foreach (var nsUserNotification in NotificationsNative)
-    //     {
-    //         nsUserNotification.Value.Dispose();
-    //     }
-    //     NotificationsNative.Clear();
-    // }
+    private bool CanShowNotification
+    {
+        get => _canShowNotification ??= Ustawienia.AuthorizationStatus == UNAuthorizationStatus.Authorized &&
+                                        Ustawienia.AlertSetting == UNNotificationSetting.Enabled;
+        set => _canShowNotification = value;
+    }
+
+    public MacNotificationManager()
+    {
+        NotificationCenter ??= UNUserNotificationCenter.Current;
+        NotificationCenter?.GetNotificationSettings(settings => { Ustawienia = settings; });
+    }
 
     public Task Initialize()
     {
         // NotificationsNative = new ();
-        Capabilities = NotificationManagerCapabilities.None;
+        Capabilities = NotificationManagerCapabilities.BodyText | NotificationManagerCapabilities.Audio |
+                       NotificationManagerCapabilities.Icon;
         return Task.CompletedTask;
     }
 
-    public async Task RequestPermissionAndSendOrBlockNotification(Func<UNUserNotificationCenter,Task> action)
+    async Task CompletionHandler(bool granted, Func<UNUserNotificationCenter, Task> action, NSError? error)
     {
-        _notificationCenter ??= UNUserNotificationCenter.Current;
-        
-        var settings = await _notificationCenter.GetNotificationSettingsAsync();
-        if (settings is { AuthorizationStatus: UNAuthorizationStatus.Authorized, AlertSetting: UNNotificationSetting.Enabled })
+        if (granted)
         {
-            await action(_notificationCenter);
+            await action(NotificationCenter);
         }
-        async void CompletionHandler(bool granted, NSError error)
+
+        if (CanShowNotification != granted)
         {
-            if (granted)
-            {
-                await action(_notificationCenter);
-            }
+            CanShowNotification = granted;
         }
-        _notificationCenter?.RequestAuthorization(UNAuthorizationOptions.Alert | UNAuthorizationOptions.Sound, CompletionHandler);
+
+        if (error != null)
+        {
+            throw new Exception(error.LocalizedDescription);
+        }
     }
+
+    private async Task RequestPermissionAndSendOrBlockNotification(Func<UNUserNotificationCenter, Task> action)
+    {
+        if (CanShowNotification)
+        {
+            await CompletionHandler(true, action, null);
+            return;
+        }
+
+
+        if (NotificationCenter != null)
+        {
+            Tuple<bool, NSError?> response = await NotificationCenter.RequestAuthorizationAsync(
+                UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge |
+                UNAuthorizationOptions.Sound);
+            await CompletionHandler(response.Item1, action, response.Item2);
+        }
+    }
+
+
     public async Task ShowNotification(Notification not, DateTimeOffset? expirationTime = null)
     {
         await RequestPermissionAndSendOrBlockNotification(async (nc) =>
         {
-            string cheksumOfNotificationObject = not.GetHashCode().ToString();
-            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(1, false);
+            string cheksumOfNotificationObject = Guid.NewGuid().ToString(); //not.GetHashCode().ToString();
+            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(5, false);
             var content = new UNMutableNotificationContent
             {
                 Title = not.Title ?? string.Empty,
                 Body = not.Body ?? string.Empty,
                 Sound = UNNotificationSound.Default,
-                InterruptionLevel = UNNotificationInterruptionLevel.Critical2,
+                CategoryIdentifier = "LLC",
             };
             var request =
                 UNNotificationRequest.FromIdentifier(cheksumOfNotificationObject, content, trigger);
@@ -92,7 +115,6 @@ public class MacNotificationManager : INotificationManager
             // NotificationsNative.Add(cheksumOfNotificationObject, request);
             NotificationActivated?.Invoke(this, new NotificationActivatedEventArgs(not, cheksumOfNotificationObject));
         });
-      
     }
 
     public Task HideNotification(Notification not)
@@ -109,7 +131,6 @@ public class MacNotificationManager : INotificationManager
     public async Task ScheduleNotification(Notification not, DateTimeOffset deliveryTime,
         DateTimeOffset? expirationTime = null)
     {
-       
         await RequestPermissionAndSendOrBlockNotification(async (nc) =>
         {
             var id = Guid.NewGuid().ToString();
@@ -119,22 +140,22 @@ public class MacNotificationManager : INotificationManager
                 Title = not.Title ?? string.Empty,
                 Body = not.Body ?? string.Empty,
                 Sound = UNNotificationSound.Default,
-                InterruptionLevel = UNNotificationInterruptionLevel.Critical2,
             };
             var request =
                 UNNotificationRequest.FromIdentifier(id, content, trigger);
             await nc.AddNotificationRequestAsync(request);
-           // Notifications.Add(not, request);
+            // Notifications.Add(not, request);
             NotificationActivated?.Invoke(this, new NotificationActivatedEventArgs(not, id));
         });
     }
 
-    public string? LaunchActionId { get; }= "LLC.Mac";
+    public string? LaunchActionId { get; } = "LLC.Mac";
     public NotificationManagerCapabilities Capabilities { get; private set; }
     public event EventHandler<NotificationActivatedEventArgs>? NotificationActivated;
     public event EventHandler<NotificationDismissedEventArgs>? NotificationDismissed;
+
     public void Dispose()
     {
-        _notificationCenter?.Dispose();
+        NotificationCenter?.Dispose();
     }
 }
