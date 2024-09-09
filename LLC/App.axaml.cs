@@ -20,7 +20,6 @@ namespace LLC;
 
 public partial class App : AppBase, IViewFor<AppViewModel>
 {
-
     private List<Task> ServicesTasks { get; set; } = new();
     private List<IService> Services { get; set; } = new();
 
@@ -34,23 +33,15 @@ public partial class App : AppBase, IViewFor<AppViewModel>
 
     public override void Initialize()
     {
-        Locator.CurrentMutable.RegisterLazySingleton(() => new ConventionalViewLocator(), typeof(IViewLocator));
-        RegisterSingleton(() => new FluentThemeConfig(), typeof(FluentThemeConfig));
-        RegisterSingleton(() => new AppViewModel()
-        {
-            ThemeConfig = Locator.Current.GetService<FluentThemeConfig>()
-        }, typeof(AppViewModel));
-        RegisterSingleton(() => new MainWindow(), typeof(MainWindow));
-        RegisterSingleton(() => new MainWindowViewModel(), typeof(MainWindowViewModel));
+        
+        RegisterContainer();
 
-        ScanAssemblies();
         AvaloniaXamlLoader.Load(this);
 
         ViewModel = Locator.Current.GetService<AppViewModel>() ?? throw new ArgumentNullException(nameof(AppViewModel));
         DataContext = ViewModel;
-        
-       
-        
+
+
         // set the theme
         this.WhenAnyValue(x => x.ViewModel.ThemeConfig, x => x.ViewModel.ThemeConfig.IsDarkMode).Subscribe(x =>
         {
@@ -80,7 +71,6 @@ public partial class App : AppBase, IViewFor<AppViewModel>
                 };
                 Styles.Add(theme);
                 RequestedThemeVariant = isDarkMode ? ThemeVariant.Dark : ThemeVariant.Light;
-              
             }
         });
     }
@@ -97,17 +87,16 @@ public partial class App : AppBase, IViewFor<AppViewModel>
             desktop.Exit += OnExit;
         }
 
-        var service = new UdpService(new ServiceConfig());
+        //var service = new UdpService(new ServiceConfig());
 
 
         base.OnFrameworkInitializationCompleted();
-        Task.Run(() =>
-        {
-            ServicesTasks.Add(service.Run());
-            Services.Add(service);
-        });
-      
-    }
+        // Task.Run(() =>
+        // {
+        //     ServicesTasks.Add(service.Run());
+        //     Services.Add(service);
+        // });
+        }
 
     private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {

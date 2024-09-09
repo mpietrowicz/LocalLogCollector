@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Input;
 using Avalonia.Threading;
+using FluentAssertions;
 
 namespace LLC.Headless.Tests.Extensions;
 
@@ -28,10 +29,14 @@ public static class HeadlessExtensions
     }
     public static bool ClickObject(this Window window, Control controlToClickOn)
     {
+        window.Should().NotBeNull();
+        controlToClickOn.Should().NotBeNull();
+        
+        
         if (controlToClickOn is { IsVisible: true, IsEnabled: true })
         {
             controlToClickOn.Focus();
-            window?.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
+            window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
             Dispatcher.UIThread.RunJobs();
             return true;
         }
