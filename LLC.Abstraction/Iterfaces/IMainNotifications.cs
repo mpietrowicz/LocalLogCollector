@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace LLC.Abstraction.Iterfaces;
 
 public interface IMainNotifications

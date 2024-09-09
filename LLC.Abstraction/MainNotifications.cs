@@ -4,13 +4,13 @@ using Splat;
 
 namespace LLC.Abstraction;
 
-public class MainMainNotifications : IMainNotifications
+public class MainNotifications : IMainNotifications
 {
     public EventHandler<DesktopNotifications.Notification> Notify { get; set; }
 
     private static DesktopNotifications.INotificationManager? _systemManager;
 
-    private static DesktopNotifications.INotificationManager SystemManager => _systemManager ??=
+    private static DesktopNotifications.INotificationManager? SystemManager => _systemManager ??=
         Locator.Current.GetService<DesktopNotifications.INotificationManager>();
 
 
@@ -21,7 +21,7 @@ public class MainMainNotifications : IMainNotifications
 
     public async Task ShowAsync(string title, string messge)
     {
-        var send = SystemManager.ShowNotification(new DesktopNotifications.Notification()
+        var send = SystemManager?.ShowNotification(new DesktopNotifications.Notification()
         {
             Title = title,
             Body = messge
@@ -31,6 +31,13 @@ public class MainMainNotifications : IMainNotifications
             Title = title,
             Body = messge
         });
-        await send;
+        if (send != null)
+        {
+            await send;
+        }
+        else
+        {
+            throw new NullReferenceException("SystemManager is null");
+        }
     }
 }

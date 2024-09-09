@@ -24,7 +24,7 @@ public abstract class AppBase : Application
 
     public void RegisterContainer()
     {
-        Locator.CurrentMutable.RegisterLazySingleton(() => new MainMainNotifications(), typeof(IMainNotifications));
+        Locator.CurrentMutable.RegisterLazySingleton(() => new MainNotifications(), typeof(IMainNotifications));
         Locator.CurrentMutable.RegisterLazySingleton(() => new ConventionalViewLocator(), typeof(IViewLocator));
         RegisterSingleton(() => new FluentThemeConfig(), typeof(FluentThemeConfig));
         RegisterSingleton(() => new AppViewModel()
