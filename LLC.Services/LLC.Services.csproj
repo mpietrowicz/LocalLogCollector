@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.XmlSerializer.Generator" Version="8.0.0" />
+      <PackageReference Update="Splat" Version="15.1.1" />
     </ItemGroup>
     <ItemGroup>
         <DotNetCliToolReference Include="Microsoft.XmlSerializer.Generator" Version="1.0.0" />
