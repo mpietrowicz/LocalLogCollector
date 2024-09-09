@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <AvaloniaVersion>11.0.11</AvaloniaVersion>
+    <NetVersion>net8.0</NetVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Splat" Version="14.8.12" />
+    <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10" />
+  </ItemGroup>
+
+</Project>
+
